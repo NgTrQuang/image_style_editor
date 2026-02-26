@@ -1,3 +1,5 @@
+import { useT } from '../../i18n/I18nContext'
+
 interface ClaritySharpnessProps {
   clarity: number
   sharpenAmount: number
@@ -9,6 +11,7 @@ interface ClaritySharpnessProps {
 export function ClaritySharpness({
   clarity, sharpenAmount, sharpenRadius, onChange, hasImage
 }: ClaritySharpnessProps) {
+  const { t } = useT()
   const row = 'flex flex-col gap-0.5 mb-2'
   const labelRow = 'flex justify-between text-[10px] text-zinc-400'
   const slider = 'w-full accent-indigo-500 disabled:opacity-30'
@@ -17,7 +20,7 @@ export function ClaritySharpness({
     <div className="flex flex-col">
       <div className={row}>
         <div className={labelRow}>
-          <span>Clarity</span>
+          <span>{t('clarity')}</span>
           <span className="font-mono text-zinc-300">{clarity > 0 ? '+' : ''}{clarity}</span>
         </div>
         <input
@@ -31,7 +34,7 @@ export function ClaritySharpness({
 
       <div className={row}>
         <div className={labelRow}>
-          <span>Sharpen</span>
+          <span>{t('sharpen')}</span>
           <span className="font-mono text-zinc-300">{sharpenAmount}</span>
         </div>
         <input
@@ -42,7 +45,7 @@ export function ClaritySharpness({
       </div>
       <div className={row}>
         <div className={labelRow}>
-          <span>Sharpen Radius</span>
+          <span>{t('sharpenRadius')}</span>
           <span className="font-mono text-zinc-300">{sharpenRadius}px</span>
         </div>
         <input
@@ -57,7 +60,7 @@ export function ClaritySharpness({
         disabled={!hasImage || (clarity === 0 && sharpenAmount === 0)}
         onClick={() => onChange(0, 0, 2)}
       >
-        Reset
+        {t('reset')}
       </button>
     </div>
   )

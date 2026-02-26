@@ -1,5 +1,6 @@
 import React, { useRef } from 'react'
 import { Upload, ImageIcon } from 'lucide-react'
+import { useT } from '../../i18n/I18nContext'
 
 interface HeaderProps {
   onImageLoad: (image: HTMLImageElement) => void
@@ -12,14 +13,15 @@ const ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'image/webp']
 
 export function Header({ onImageLoad, onError, hasImage }: HeaderProps) {
   const inputRef = useRef<HTMLInputElement>(null)
+  const { t, locale, setLocale } = useT()
 
   const handleFile = (file: File) => {
     if (!ACCEPTED_TYPES.includes(file.type)) {
-      onError('Invalid file type. Please upload JPG, PNG, or WebP.')
+      onError(t('errorInvalidType'))
       return
     }
     if (file.size > MAX_FILE_SIZE) {
-      onError('File too large. Maximum size is 10MB.')
+      onError(t('errorTooLarge'))
       return
     }
 
@@ -42,7 +44,7 @@ export function Header({ onImageLoad, onError, hasImage }: HeaderProps) {
           onImageLoad(img)
         }
       }
-      img.onerror = () => onError('Failed to load image. The file may be corrupted.')
+      img.onerror = () => onError(t('errorLoadFailed'))
       img.src = e.target!.result as string
     }
     reader.readAsDataURL(file)
@@ -67,7 +69,7 @@ export function Header({ onImageLoad, onError, hasImage }: HeaderProps) {
         <div className="w-7 h-7 bg-indigo-600 rounded-lg flex items-center justify-center">
           <ImageIcon size={14} className="text-white" />
         </div>
-        <span className="text-sm font-semibold text-zinc-100">Image Style Editor</span>
+        <span className="text-sm font-semibold text-zinc-100">{t('appName')}</span>
       </div>
 
       {/* Upload button */}
@@ -85,16 +87,38 @@ export function Header({ onImageLoad, onError, hasImage }: HeaderProps) {
         className="flex items-center gap-2 px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white text-sm rounded-lg transition-colors"
       >
         <Upload size={14} />
-        <span>{hasImage ? 'Change Image' : 'Upload Image'}</span>
+        <span>{hasImage ? t('changeImage') : t('uploadImage')}</span>
       </button>
 
-      <span className="text-xs text-zinc-500">JPG, PNG, WebP · max 10MB</span>
+      <span className="text-xs text-zinc-500">{t('fileHint')}</span>
 
       <div className="flex-1" />
 
-      <span className="text-xs text-zinc-600">
-        Non-destructive · Browser-only
-      </span>
+      <span className="text-xs text-zinc-600 hidden sm:block">{t('tagline')}</span>
+
+      {/* Language toggle */}
+      <div className="flex items-center gap-1 bg-zinc-800 rounded-lg p-0.5">
+        <button
+          onClick={() => setLocale('en')}
+          className={`px-2 py-1 rounded-md text-xs font-semibold transition-all ${
+            locale === 'en'
+              ? 'bg-indigo-600 text-white'
+              : 'text-zinc-400 hover:text-zinc-200'
+          }`}
+        >
+          EN
+        </button>
+        <button
+          onClick={() => setLocale('vi')}
+          className={`px-2 py-1 rounded-md text-xs font-semibold transition-all ${
+            locale === 'vi'
+              ? 'bg-indigo-600 text-white'
+              : 'text-zinc-400 hover:text-zinc-200'
+          }`}
+        >
+          VI
+        </button>
+      </div>
     </header>
   )
 }

@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { Preset } from '../../types/editor'
 import { PRESETS, PRESET_CATEGORIES } from '../../data/presets'
 import { PresetCard } from './PresetCard'
+import { useT } from '../../i18n/I18nContext'
+import type { TranslationKeys } from '../../i18n/locales/en'
 
 interface LeftPanelProps {
   selectedPresetId: string | null
@@ -21,6 +23,16 @@ const CATEGORY_ICONS: Record<string, string> = {
   'Dreamy': '✨',
 }
 
+const CATEGORY_KEYS: Record<string, TranslationKeys> = {
+  'Cinematic': 'catCinematic',
+  'Vintage': 'catVintage',
+  'Portrait': 'catPortrait',
+  'Landscape': 'catLandscape',
+  'Dark Mood': 'catDarkMood',
+  'Urban': 'catUrban',
+  'Dreamy': 'catDreamy',
+}
+
 export function LeftPanel({
   selectedPresetId,
   intensityMap,
@@ -29,6 +41,7 @@ export function LeftPanel({
   originalImage,
 }: LeftPanelProps) {
   const [activeCategory, setActiveCategory] = useState<string>('Cinematic')
+  const { t } = useT()
 
   const filteredPresets = PRESETS.filter(p => p.category === activeCategory)
   const currentIntensity = selectedPresetId ? (intensityMap[selectedPresetId] ?? 100) : 100
@@ -36,8 +49,8 @@ export function LeftPanel({
   return (
     <div className="w-[230px] min-w-[230px] bg-zinc-900 border-r border-zinc-800 flex flex-col overflow-hidden">
       <div className="px-4 py-3 border-b border-zinc-800 flex items-center justify-between">
-        <h2 className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">Style Presets</h2>
-        <span className="text-[10px] text-zinc-600">35 styles</span>
+        <h2 className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">{t('stylePresets')}</h2>
+        <span className="text-[10px] text-zinc-600">35 {t('styles')}</span>
       </div>
 
       {/* Category tabs */}
@@ -53,7 +66,7 @@ export function LeftPanel({
             }`}
           >
             <span>{CATEGORY_ICONS[cat]}</span>
-            <span>{cat}</span>
+            <span>{t(CATEGORY_KEYS[cat])}</span>
           </button>
         ))}
       </div>
@@ -81,7 +94,7 @@ export function LeftPanel({
       {selectedPresetId && (
         <div className="px-4 py-3 border-t border-zinc-800 shrink-0">
           <div className="flex items-center justify-between mb-1.5">
-            <span className="text-[10px] text-zinc-500 uppercase tracking-wide">Active Intensity</span>
+            <span className="text-[10px] text-zinc-500 uppercase tracking-wide">{t('activeIntensity')}</span>
             <span className="text-xs text-indigo-400 font-mono font-semibold">{currentIntensity}%</span>
           </div>
           <div className="w-full bg-zinc-800 rounded-full h-1.5 overflow-hidden">
@@ -90,7 +103,7 @@ export function LeftPanel({
               style={{ width: `${currentIntensity}%` }}
             />
           </div>
-          <p className="text-[9px] text-zinc-600 mt-1.5">Drag the slider on the selected preset card</p>
+          <p className="text-[9px] text-zinc-600 mt-1.5">{t('intensityHint')}</p>
         </div>
       )}
     </div>

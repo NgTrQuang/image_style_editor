@@ -1,3 +1,5 @@
+import { useT } from '../../i18n/I18nContext'
+
 interface HighlightShadowProps {
   highlights: number
   shadows: number
@@ -6,6 +8,7 @@ interface HighlightShadowProps {
 }
 
 export function HighlightShadow({ highlights, shadows, onChange, hasImage }: HighlightShadowProps) {
+  const { t } = useT()
   const row = 'flex flex-col gap-0.5 mb-2'
   const label = 'flex justify-between text-[10px] text-zinc-400'
   const slider = 'w-full accent-indigo-500 disabled:opacity-30'
@@ -14,7 +17,7 @@ export function HighlightShadow({ highlights, shadows, onChange, hasImage }: Hig
     <div className="flex flex-col">
       <div className={row}>
         <div className={label}>
-          <span>Highlights</span>
+          <span>{t('highlights')}</span>
           <span className="font-mono text-zinc-300">{highlights > 0 ? '+' : ''}{highlights}</span>
         </div>
         <input
@@ -26,7 +29,7 @@ export function HighlightShadow({ highlights, shadows, onChange, hasImage }: Hig
       </div>
       <div className={row}>
         <div className={label}>
-          <span>Shadows</span>
+          <span>{t('shadows')}</span>
           <span className="font-mono text-zinc-300">{shadows > 0 ? '+' : ''}{shadows}</span>
         </div>
         <input
@@ -41,7 +44,7 @@ export function HighlightShadow({ highlights, shadows, onChange, hasImage }: Hig
         disabled={!hasImage || (highlights === 0 && shadows === 0)}
         onClick={() => onChange(0, 0)}
       >
-        Reset
+        {t('reset')}
       </button>
     </div>
   )

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { RadialMaskConfig, GradientMaskConfig } from '../../types/editor'
+import { useT } from '../../i18n/I18nContext'
 
 type MaskType = 'radial' | 'gradient'
 
@@ -34,6 +35,7 @@ function LabeledSlider({
 
 export function MaskTool({ onAddRadialMask, onAddGradientMask, hasImage }: MaskToolProps) {
   const [maskType, setMaskType] = useState<MaskType>('radial')
+  const { t } = useT()
 
   // Radial state (normalized 0-1)
   const [rCx, setRCx] = useState(50)
@@ -72,39 +74,46 @@ export function MaskTool({ onAddRadialMask, onAddGradientMask, hasImage }: MaskT
     <div className="space-y-2">
       {/* Type tabs */}
       <div className="flex gap-1">
-        {(['radial', 'gradient'] as MaskType[]).map(t => (
-          <button
-            key={t}
-            onClick={() => setMaskType(t)}
-            className={`flex-1 py-1 rounded text-[10px] font-medium capitalize transition-all ${
-              maskType === t
-                ? 'bg-indigo-600 text-white'
-                : 'bg-zinc-800 text-zinc-400 hover:text-zinc-200'
-            }`}
-          >
-            {t}
-          </button>
-        ))}
+        <button
+          onClick={() => setMaskType('radial')}
+          className={`flex-1 py-1 rounded text-[10px] font-medium transition-all ${
+            maskType === 'radial'
+              ? 'bg-indigo-600 text-white'
+              : 'bg-zinc-800 text-zinc-400 hover:text-zinc-200'
+          }`}
+        >
+          {t('radialMask')}
+        </button>
+        <button
+          onClick={() => setMaskType('gradient')}
+          className={`flex-1 py-1 rounded text-[10px] font-medium transition-all ${
+            maskType === 'gradient'
+              ? 'bg-indigo-600 text-white'
+              : 'bg-zinc-800 text-zinc-400 hover:text-zinc-200'
+          }`}
+        >
+          {t('gradientMask')}
+        </button>
       </div>
 
       <div className="bg-zinc-800/50 rounded-lg px-2 pt-2 pb-1">
         {maskType === 'radial' ? (
           <>
-            <LabeledSlider label="Center X (%)" value={rCx} min={0} max={100} onChange={setRCx} />
-            <LabeledSlider label="Center Y (%)" value={rCy} min={0} max={100} onChange={setRCy} />
-            <LabeledSlider label="Radius X (%)" value={rRx} min={5} max={100} onChange={setRRx} />
-            <LabeledSlider label="Radius Y (%)" value={rRy} min={5} max={100} onChange={setRRy} />
-            <LabeledSlider label="Feather" value={rFeather} min={0} max={100} onChange={setRFeather} />
-            <LabeledSlider label="Exposure" value={rExposure} min={-100} max={100} onChange={setRExposure} />
+            <LabeledSlider label={`${t('centerX')} (%)`} value={rCx} min={0} max={100} onChange={setRCx} />
+            <LabeledSlider label={`${t('centerY')} (%)`} value={rCy} min={0} max={100} onChange={setRCy} />
+            <LabeledSlider label={`${t('radiusX')} (%)`} value={rRx} min={5} max={100} onChange={setRRx} />
+            <LabeledSlider label={`${t('radiusY')} (%)`} value={rRy} min={5} max={100} onChange={setRRy} />
+            <LabeledSlider label={t('feather')} value={rFeather} min={0} max={100} onChange={setRFeather} />
+            <LabeledSlider label={t('exposure')} value={rExposure} min={-100} max={100} onChange={setRExposure} />
           </>
         ) : (
           <>
-            <LabeledSlider label="Start X (%)" value={gX1} min={0} max={100} onChange={setGX1} />
-            <LabeledSlider label="Start Y (%)" value={gY1} min={0} max={100} onChange={setGY1} />
-            <LabeledSlider label="End X (%)"   value={gX2} min={0} max={100} onChange={setGX2} />
-            <LabeledSlider label="End Y (%)"   value={gY2} min={0} max={100} onChange={setGY2} />
-            <LabeledSlider label="Feather" value={gFeather} min={0} max={100} onChange={setGFeather} />
-            <LabeledSlider label="Exposure" value={gExposure} min={-100} max={100} onChange={setGExposure} />
+            <LabeledSlider label={`${t('startX')} (%)`} value={gX1} min={0} max={100} onChange={setGX1} />
+            <LabeledSlider label={`${t('startY')} (%)`} value={gY1} min={0} max={100} onChange={setGY1} />
+            <LabeledSlider label={`${t('endX')} (%)`}   value={gX2} min={0} max={100} onChange={setGX2} />
+            <LabeledSlider label={`${t('endY')} (%)`}   value={gY2} min={0} max={100} onChange={setGY2} />
+            <LabeledSlider label={t('feather')} value={gFeather} min={0} max={100} onChange={setGFeather} />
+            <LabeledSlider label={t('exposure')} value={gExposure} min={-100} max={100} onChange={setGExposure} />
           </>
         )}
       </div>
@@ -114,9 +123,9 @@ export function MaskTool({ onAddRadialMask, onAddGradientMask, hasImage }: MaskT
         disabled={!hasImage}
         className="w-full py-1.5 rounded bg-indigo-700 hover:bg-indigo-600 text-white text-xs font-medium disabled:opacity-30 transition-colors"
       >
-        Apply Mask
+        {t('addMask')}
       </button>
-      <p className="text-[9px] text-zinc-600">Each application adds a new mask layer</p>
+      <p className="text-[9px] text-zinc-600">{maskType === 'radial' ? t('radialMask') : t('gradientMask')}</p>
     </div>
   )
 }

@@ -1,3 +1,5 @@
+import { useT } from '../../i18n/I18nContext'
+
 interface GrainVignetteProps {
   grainAmount: number
   vignetteAmount: number
@@ -33,27 +35,28 @@ export function GrainVignette({
   grainAmount, vignetteAmount, vignetteFeather,
   onGrain, onVignette, hasImage,
 }: GrainVignetteProps) {
+  const { t } = useT()
   return (
     <div className="space-y-3">
       {/* Film Grain */}
       <div>
-        <p className="text-[9px] text-zinc-600 uppercase tracking-wider mb-1.5">Film Grain</p>
+        <p className="text-[9px] text-zinc-600 uppercase tracking-wider mb-1.5">{t('grain')}</p>
         <LabeledSlider
-          label="📽 Amount" value={grainAmount} min={0} max={100}
+          label={`📽 ${t('grain')}`} value={grainAmount} min={0} max={100}
           disabled={!hasImage} onChange={onGrain}
         />
       </div>
 
       {/* Vignette */}
       <div>
-        <p className="text-[9px] text-zinc-600 uppercase tracking-wider mb-1.5">Vignette</p>
+        <p className="text-[9px] text-zinc-600 uppercase tracking-wider mb-1.5">{t('vignetteAmount')}</p>
         <LabeledSlider
-          label="⬛ Amount" value={vignetteAmount} min={0} max={100}
+          label={`⬛ ${t('vignetteAmount')}`} value={vignetteAmount} min={0} max={100}
           disabled={!hasImage}
           onChange={v => onVignette(v, vignetteFeather)}
         />
         <LabeledSlider
-          label="🌫 Feather" value={vignetteFeather} min={0} max={100}
+          label={`🌫 ${t('vignetteFeather')}`} value={vignetteFeather} min={0} max={100}
           disabled={!hasImage || vignetteAmount === 0}
           onChange={v => onVignette(vignetteAmount, v)}
         />

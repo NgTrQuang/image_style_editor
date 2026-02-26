@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { HslChannel } from '../../types/editor'
+import { useT } from '../../i18n/I18nContext'
 
 const HSL_CHANNELS: { id: HslChannel; label: string; color: string }[] = [
   { id: 'red',    label: 'Red',    color: '#ef4444' },
@@ -49,6 +50,7 @@ export function ColorControls({
   temperature, tint, hslMap, onTemperature, onTint, onHsl, hasImage,
 }: ColorControlsProps) {
   const [activeChannel, setActiveChannel] = useState<HslChannel | null>(null)
+  const { t } = useT()
 
   const hsl = activeChannel ? (hslMap[activeChannel] ?? { hue: 0, sat: 0, light: 0 }) : null
 
@@ -56,15 +58,15 @@ export function ColorControls({
     <div className="space-y-3">
       {/* White Balance */}
       <div>
-        <p className="text-[9px] text-zinc-600 uppercase tracking-wider mb-1.5">White Balance</p>
+        <p className="text-[9px] text-zinc-600 uppercase tracking-wider mb-1.5">{t('whiteBalance')}</p>
         <LabeledSlider
-          label="🌡 Temperature"
+          label={t('temperature')}
           value={temperature} min={-100} max={100}
           disabled={!hasImage} onChange={onTemperature}
           accent="#f97316"
         />
         <LabeledSlider
-          label="🎨 Tint"
+          label={t('tint')}
           value={tint} min={-100} max={100}
           disabled={!hasImage} onChange={onTint}
           accent="#a855f7"
@@ -73,7 +75,7 @@ export function ColorControls({
 
       {/* HSL */}
       <div>
-        <p className="text-[9px] text-zinc-600 uppercase tracking-wider mb-1.5">HSL</p>
+        <p className="text-[9px] text-zinc-600 uppercase tracking-wider mb-1.5">{t('hsl')}</p>
         {/* Channel selector */}
         <div className="flex gap-1 flex-wrap mb-2">
           {HSL_CHANNELS.map(ch => (
@@ -96,21 +98,21 @@ export function ColorControls({
         {activeChannel && hsl && (
           <div className="bg-zinc-800/50 rounded-lg px-2 pt-2 pb-1">
             <LabeledSlider
-              label="Hue"
+              label={t('hue')}
               value={hsl.hue} min={-180} max={180}
               disabled={!hasImage}
               onChange={v => onHsl(activeChannel, v, hsl.sat, hsl.light)}
               accent={HSL_CHANNELS.find(c => c.id === activeChannel)?.color}
             />
             <LabeledSlider
-              label="Saturation"
+              label={t('saturation')}
               value={hsl.sat} min={-100} max={100}
               disabled={!hasImage}
               onChange={v => onHsl(activeChannel, hsl.hue, v, hsl.light)}
               accent={HSL_CHANNELS.find(c => c.id === activeChannel)?.color}
             />
             <LabeledSlider
-              label="Lightness"
+              label={t('lightness')}
               value={hsl.light} min={-100} max={100}
               disabled={!hasImage}
               onChange={v => onHsl(activeChannel, hsl.hue, hsl.sat, v)}
@@ -119,7 +121,7 @@ export function ColorControls({
           </div>
         )}
         {!activeChannel && (
-          <p className="text-[10px] text-zinc-600 text-center py-1">Select a color channel above</p>
+          <p className="text-[10px] text-zinc-600 text-center py-1">{t('selectChannel')}</p>
         )}
       </div>
     </div>

@@ -1,3 +1,5 @@
+import { useT } from '../../i18n/I18nContext'
+
 interface SplitToningProps {
   highlightHue: number
   highlightSat: number
@@ -11,6 +13,7 @@ interface SplitToningProps {
 export function SplitToning({
   highlightHue, highlightSat, shadowHue, shadowSat, balance, onChange, hasImage
 }: SplitToningProps) {
+  const { t } = useT()
   const row = 'flex flex-col gap-0.5 mb-2'
   const labelRow = 'flex justify-between text-[10px] text-zinc-400'
   const slider = 'w-full accent-indigo-500 disabled:opacity-30'
@@ -23,7 +26,7 @@ export function SplitToning({
   return (
     <div className="flex flex-col">
       {/* Highlights */}
-      <p className="text-[9px] font-semibold text-zinc-500 uppercase tracking-wider mb-1">Highlights</p>
+      <p className="text-[9px] font-semibold text-zinc-500 uppercase tracking-wider mb-1">{t('stHighlights')}</p>
       <div className="flex items-center gap-2 mb-1">
         <div
           className="w-4 h-4 rounded-full border border-zinc-700 flex-shrink-0"
@@ -59,7 +62,7 @@ export function SplitToning({
       <div className="border-t border-zinc-800 my-1.5" />
 
       {/* Shadows */}
-      <p className="text-[9px] font-semibold text-zinc-500 uppercase tracking-wider mb-1">Shadows</p>
+      <p className="text-[9px] font-semibold text-zinc-500 uppercase tracking-wider mb-1">{t('stShadows')}</p>
       <div className="flex items-center gap-2 mb-1">
         <div
           className="w-4 h-4 rounded-full border border-zinc-700 flex-shrink-0"
@@ -97,7 +100,7 @@ export function SplitToning({
       {/* Balance */}
       <div className={row}>
         <div className={labelRow}>
-          <span>Balance</span>
+          <span>{t('balance')}</span>
           <span className="font-mono text-zinc-300">{balance > 0 ? '+' : ''}{balance}</span>
         </div>
         <input
@@ -112,7 +115,7 @@ export function SplitToning({
         disabled={!hasImage || (highlightSat === 0 && shadowSat === 0 && balance === 0)}
         onClick={() => onChange(0, 0, 0, 0, 0)}
       >
-        Reset
+        {t('reset')}
       </button>
     </div>
   )

@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react'
+import { useT } from '../../i18n/I18nContext'
 import {
   RotateCw, FlipHorizontal, FlipVertical, Crop,
   Undo2, Redo2, RotateCcw, Download,
@@ -108,6 +109,7 @@ export function RightPanel({
   const [exportFormat, setExportFormat] = useState<'png' | 'jpeg'>('png')
   const [exportQuality, setExportQuality] = useState(0.92)
   const sessionImportRef = useRef<HTMLInputElement>(null)
+  const { t } = useT()
 
   const btnBase = 'flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-all disabled:opacity-30 disabled:cursor-not-allowed'
   const btnPrimary = `${btnBase} bg-zinc-800 hover:bg-zinc-700 text-zinc-200`
@@ -118,33 +120,33 @@ export function RightPanel({
     <div className="w-[220px] min-w-[220px] bg-zinc-900 border-l border-zinc-800 flex flex-col overflow-y-auto">
 
       {/* Histogram */}
-      <Section title="Histogram">
+      <Section title={t('histogram')}>
         <Histogram data={histData} />
       </Section>
 
       {/* Transform */}
-      <Section title="Transform">
+      <Section title={t('transform')}>
         <div className="grid grid-cols-2 gap-1.5">
           <button className={btnPrimary} onClick={() => onRotate(90)} disabled={!hasImage} title="Rotate 90° CW">
-            <RotateCw size={14} /><span>CW 90°</span>
+            <RotateCw size={14} /><span>{t('cwRotate')}</span>
           </button>
           <button className={btnPrimary} onClick={() => onRotate(-90)} disabled={!hasImage} title="Rotate 90° CCW">
-            <RotateCcw size={14} /><span>CCW 90°</span>
+            <RotateCcw size={14} /><span>{t('ccwRotate')}</span>
           </button>
           <button className={btnPrimary} onClick={() => onFlip('horizontal')} disabled={!hasImage}>
-            <FlipHorizontal size={14} /><span>Flip H</span>
+            <FlipHorizontal size={14} /><span>{t('flipH')}</span>
           </button>
           <button className={btnPrimary} onClick={() => onFlip('vertical')} disabled={!hasImage}>
-            <FlipVertical size={14} /><span>Flip V</span>
+            <FlipVertical size={14} /><span>{t('flipV')}</span>
           </button>
         </div>
         <button className={`w-full ${isCropping ? btnActive : btnPrimary} mt-1.5`} onClick={onCrop} disabled={!hasImage}>
-          <Crop size={14} /><span>{isCropping ? 'Cropping…' : 'Crop'}</span>
+          <Crop size={14} /><span>{isCropping ? t('cropping') : t('crop')}</span>
         </button>
       </Section>
 
       {/* Highlight & Shadow */}
-      <CollapsibleSection title="Highlights & Shadows">
+      <CollapsibleSection title={t('highlightsShadows')}>
         <HighlightShadow
           highlights={highlights} shadows={shadows}
           onChange={onHighlightShadow} hasImage={hasImage}
@@ -152,12 +154,12 @@ export function RightPanel({
       </CollapsibleSection>
 
       {/* Vibrance */}
-      <CollapsibleSection title="Vibrance">
+      <CollapsibleSection title={t('vibrance')}>
         <Vibrance vibrance={vibrance} onChange={onVibrance} hasImage={hasImage} />
       </CollapsibleSection>
 
       {/* Color Controls */}
-      <CollapsibleSection title="Color" defaultOpen>
+      <CollapsibleSection title={t('color')} defaultOpen>
         <ColorControls
           temperature={temperature} tint={tint} hslMap={hslMap}
           onTemperature={onTemperature} onTint={onTint} onHsl={onHsl}
@@ -166,12 +168,12 @@ export function RightPanel({
       </CollapsibleSection>
 
       {/* Curves */}
-      <CollapsibleSection title="Curves">
+      <CollapsibleSection title={t('curves')}>
         <CurvesTool curves={curves} onCurveChange={onCurveChange} hasImage={hasImage} />
       </CollapsibleSection>
 
       {/* Clarity & Sharpen */}
-      <CollapsibleSection title="Clarity & Sharpness">
+      <CollapsibleSection title={t('claritySharpness')}>
         <ClaritySharpness
           clarity={clarity} sharpenAmount={sharpenAmount} sharpenRadius={sharpenRadius}
           onChange={onClaritySharpness} hasImage={hasImage}
@@ -179,7 +181,7 @@ export function RightPanel({
       </CollapsibleSection>
 
       {/* Split Toning */}
-      <CollapsibleSection title="Split Toning">
+      <CollapsibleSection title={t('splitToning')}>
         <SplitToning
           highlightHue={highlightHue} highlightSat={highlightSat}
           shadowHue={shadowHue} shadowSat={shadowSat} balance={splitBalance}
@@ -188,7 +190,7 @@ export function RightPanel({
       </CollapsibleSection>
 
       {/* Grain & Vignette */}
-      <CollapsibleSection title="Grain & Vignette">
+      <CollapsibleSection title={t('grainVignette')}>
         <GrainVignette
           grainAmount={grainAmount} vignetteAmount={vignetteAmount} vignetteFeather={vignetteFeather}
           onGrain={onGrain} onVignette={onVignette} hasImage={hasImage}
@@ -196,59 +198,59 @@ export function RightPanel({
       </CollapsibleSection>
 
       {/* Masks */}
-      <CollapsibleSection title="Masks">
+      <CollapsibleSection title={t('masks')}>
         <MaskTool onAddRadialMask={onAddRadialMask} onAddGradientMask={onAddGradientMask} hasImage={hasImage} />
       </CollapsibleSection>
 
       {/* History */}
-      <Section title="History">
+      <Section title={t('history')}>
         <div className="flex gap-1.5">
           <button className={`flex-1 ${btnPrimary}`} onClick={onUndo} disabled={!canUndo}>
-            <Undo2 size={14} /><span>Undo</span>
+            <Undo2 size={14} /><span>{t('undo')}</span>
           </button>
           <button className={`flex-1 ${btnPrimary}`} onClick={onRedo} disabled={!canRedo}>
-            <Redo2 size={14} /><span>Redo</span>
+            <Redo2 size={14} /><span>{t('redo')}</span>
           </button>
         </div>
-        <p className="text-[10px] text-zinc-600 mt-1">Ctrl+Z / Ctrl+Shift+Z</p>
+        <p className="text-[10px] text-zinc-600 mt-1">{t('undoHint')}</p>
         {hasImage && (
           <div className="flex items-center justify-between mt-2 px-1">
-            <span className="text-[10px] text-zinc-600">Operations</span>
+            <span className="text-[10px] text-zinc-600">{t('operations')}</span>
             <span className={`text-[10px] font-mono font-semibold px-1.5 py-0.5 rounded ${
               operationCount >= 90 ? 'bg-orange-900/50 text-orange-400' : 'bg-zinc-800 text-zinc-400'
             }`}>{operationCount} / 100</span>
           </div>
         )}
         <button className={`w-full ${btnDanger} mt-1.5`} onClick={onReset} disabled={!hasImage}>
-          <RotateCcw size={14} /><span>Reset All</span>
+          <RotateCcw size={14} /><span>{t('resetAll')}</span>
         </button>
         <button
           className={`w-full ${btnBase} mt-1.5 bg-amber-900/40 hover:bg-amber-800/60 text-amber-300 disabled:opacity-30 justify-start`}
           onClick={onFlatten}
           disabled={!hasImage || isFlattening || operationCount === 0}
-          title="Merge current edits into a new base image and reset history."
+          title={t('flattenHint')}
         >
-          <Layers size={14} /><span>{isFlattening ? 'Flattening…' : 'Apply & Flatten'}</span>
+          <Layers size={14} /><span>{isFlattening ? t('flattening') : t('applyFlatten')}</span>
         </button>
-        <p className="text-[10px] text-zinc-600 mt-1 leading-tight">Merges edits into base image. Clears history.</p>
+        <p className="text-[10px] text-zinc-600 mt-1 leading-tight">{t('flattenHint')}</p>
       </Section>
 
       {/* Compare */}
-      <Section title="Compare">
+      <Section title={t('compare')}>
         <button className={`w-full ${showComparison ? btnActive : btnPrimary}`} onClick={onToggleComparison} disabled={!hasImage}>
-          <SplitSquareHorizontal size={14} /><span>{showComparison ? 'Hide Compare' : 'Compare'}</span>
+          <SplitSquareHorizontal size={14} /><span>{showComparison ? t('hideCompare') : t('compareBtn')}</span>
         </button>
         <button
           className={`w-full ${btnPrimary} mt-1.5`}
           onMouseDown={onHoldPreviewStart} onMouseUp={onHoldPreviewEnd} onMouseLeave={onHoldPreviewEnd}
           disabled={!hasImage}
         >
-          <Eye size={14} /><span>Hold to Preview</span>
+          <Eye size={14} /><span>{t('holdPreview')}</span>
         </button>
       </Section>
 
       {/* Zoom */}
-      <Section title="Zoom">
+      <Section title={t('zoom')}>
         <div className="flex items-center gap-2">
           <button className="w-7 h-7 flex items-center justify-center rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-lg leading-none"
             onClick={() => onZoomChange(Math.max(0.1, zoom - 0.1))}>−</button>
@@ -257,26 +259,26 @@ export function RightPanel({
             onClick={() => onZoomChange(Math.min(3, zoom + 0.1))}>+</button>
         </div>
         <button className="w-full text-xs text-zinc-500 hover:text-zinc-300 mt-1 transition-colors" onClick={() => onZoomChange(1)}>
-          Reset zoom
+          {t('resetZoom')}
         </button>
       </Section>
 
       {/* Session */}
-      <Section title="Session">
+      <Section title={t('session')}>
         <div className="flex flex-col gap-1.5">
           <button
             className={`w-full ${btnPrimary} justify-start`}
             onClick={onExportSession}
             disabled={!hasImage || operationCount === 0}
           >
-            <Save size={14} /><span>Export Session</span>
+            <Save size={14} /><span>{t('exportSession')}</span>
           </button>
           <button
             className={`w-full ${btnPrimary} justify-start`}
             onClick={() => sessionImportRef.current?.click()}
             disabled={!hasImage}
           >
-            <FolderOpen size={14} /><span>Import Session</span>
+            <FolderOpen size={14} /><span>{t('importSession')}</span>
           </button>
           <input
             ref={sessionImportRef}
@@ -289,13 +291,13 @@ export function RightPanel({
             }}
           />
           <p className="text-[9px] text-zinc-600 leading-tight">
-            Save / restore your editing workflow as JSON.
+            {t('sessionHint')}
           </p>
         </div>
       </Section>
 
       {/* Export */}
-      <Section title="Export Image">
+      <Section title={t('exportImage')}>
         <div className="flex gap-1.5 mb-2">
           <button onClick={() => setExportFormat('png')} className={`flex-1 py-1.5 rounded text-xs font-medium transition-colors ${exportFormat === 'png' ? 'bg-indigo-600 text-white' : 'bg-zinc-800 text-zinc-400 hover:text-zinc-200'}`}>PNG</button>
           <button onClick={() => setExportFormat('jpeg')} className={`flex-1 py-1.5 rounded text-xs font-medium transition-colors ${exportFormat === 'jpeg' ? 'bg-indigo-600 text-white' : 'bg-zinc-800 text-zinc-400 hover:text-zinc-200'}`}>JPG</button>
@@ -303,7 +305,7 @@ export function RightPanel({
         {exportFormat === 'jpeg' && (
           <div className="mb-2">
             <div className="flex justify-between text-xs text-zinc-400 mb-1">
-              <span>Quality</span>
+              <span>{t('quality')}</span>
               <span className="font-mono">{Math.round(exportQuality * 100)}%</span>
             </div>
             <input type="range" min={50} max={100} value={Math.round(exportQuality * 100)}
@@ -315,14 +317,14 @@ export function RightPanel({
           onClick={() => onExport({ format: exportFormat, quality: exportQuality })}
           disabled={!hasImage}
         >
-          <Download size={14} /><span>Download {exportFormat.toUpperCase()}</span>
+          <Download size={14} /><span>{t('download')} {exportFormat.toUpperCase()}</span>
         </button>
       </Section>
     </div>
   )
 }
 
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
+function Section({ title, children }: { title: string | React.ReactNode; children: React.ReactNode }) {
   return (
     <div className="px-3 py-3 border-b border-zinc-800">
       <h3 className="text-[10px] font-semibold text-zinc-500 uppercase tracking-wider mb-2">{title}</h3>
@@ -332,7 +334,7 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 }
 
 function CollapsibleSection({ title, children, defaultOpen = false }: {
-  title: string; children: React.ReactNode; defaultOpen?: boolean
+  title: string | React.ReactNode; children: React.ReactNode; defaultOpen?: boolean
 }) {
   const [open, setOpen] = useState(defaultOpen)
   return (
