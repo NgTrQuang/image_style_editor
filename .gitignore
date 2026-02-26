@@ -1,0 +1,38 @@
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+desktop.ini
+dist/
+build/
+out/
+target/
+bin/
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+__pycache__/
+*.pyc
+venv/
+.env/
+*.class
+*.jar
+.env
+.env.local
+.env.development
+.vscode/
+.idea/
+*.iml
+*.log
+logs/
+*.sqlite
+*.db
+# Ignore tất cả file .txt
+*.txt
+
+# Ignore thư mục uploads
+uploads/
+
+# Không ignore file cụ thể
+!important.txt
